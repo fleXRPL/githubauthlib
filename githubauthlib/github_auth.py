@@ -7,7 +7,7 @@ The module retrieves GitHub tokens from the system's secure storage:
 - Windows: Credential Manager
 - Linux: libsecret
 
-Written by: Garot Conklin
+Written by: garotm
 """
 
 import subprocess
