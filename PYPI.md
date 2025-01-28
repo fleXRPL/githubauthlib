@@ -47,7 +47,7 @@ You'll need `twine` to securely upload your package to PyPI. If you don't have i
 
     ```bash
     pip install twine
-    ``````
+    ```
 
 5. Upload the package to PyPI:
 Use `twine` to upload your package to PyPI. Run the following command:
@@ -98,3 +98,87 @@ Now that your package is on PyPI, you can install it using `pip` like any other 
 That's it! Your package is now available on PyPI and can be easily installed by others using `pip install githubauthlib`.
 
 Keep in mind that publishing packages on PyPI is a public act, and it's essential to ensure your code is properly documented, well-tested, and adheres to best practices. Make sure to thoroughly test your package and keep it up-to-date with new releases if necessary.
+
+# Publishing to PyPI using GitHub Actions Trusted Publisher
+
+This project uses GitHub Actions and PyPI's trusted publisher workflow for secure, automated package publishing.
+
+## Overview
+
+Instead of manual uploads or stored credentials, we use GitHub's OIDC (OpenID Connect) integration with PyPI for secure publishing. This means:
+
+- No API tokens or credentials needed
+- Automated publishing on version tags
+- Secure authentication via OIDC
+
+## Publishing Process
+
+1. **Local Build and Test**
+
+   ```bash
+   # Run the build script to verify everything locally
+   ./scripts/build_and_publish.sh
+   ```
+
+   This will:
+   - Create a virtual environment
+   - Run all tests and checks
+   - Build the package locally
+   - Clean up afterward
+
+2. **Create and Push a Version Tag**
+
+   ```bash
+   # Create and push a new version tag
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+   The version number should match what's in `setup.py`.
+
+3. **Automated Publishing**
+   - GitHub Actions will trigger on the tag push
+   - The workflow will:
+     - Run all tests
+     - Build the package
+     - Publish to PyPI using OIDC authentication
+   - Monitor the Actions tab for progress
+
+4. **Verify Publication**
+   - Check the package page: https://pypi.org/project/githubauthlib/
+   - Try installing the package:
+
+     ```bash
+     pip install githubauthlib
+     ```
+
+## PyPI Project Configuration
+
+The PyPI project is configured with the following trusted publisher settings:
+
+- **Publisher**: GitHub Actions
+- **Organization**: fleXRPL
+- **Repository**: githubauthlib
+- **Workflow name**: workflow.yml
+- **Environment**: pypi
+
+## Security Notes
+
+- No credentials are stored in the repository or GitHub secrets
+- Authentication is handled via OIDC between GitHub and PyPI
+- Only tagged commits from the main branch can trigger publishing
+- All publishing attempts are logged and auditable
+
+## Troubleshooting
+
+If publishing fails:
+
+1. Check the GitHub Actions logs
+2. Verify the version tag matches setup.py
+3. Ensure the workflow file matches PyPI's trusted publisher configuration
+4. Verify the package builds locally with `./scripts/build_and_publish.sh`
+
+## Related Links
+
+- [PyPI Trusted Publishers Documentation](https://docs.pypi.org/trusted-publishers/)
+- [GitHub Actions OIDC Documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
