@@ -2,7 +2,8 @@
 
 [![PyPI version](https://badge.fury.io/py/githubauthlib.svg)](https://pypi.org/project/githubauthlib/)
 [![Python](https://img.shields.io/pypi/pyversions/githubauthlib.svg)](https://pypi.org/project/githubauthlib/)
-[![Tests](https://github.com/fleXRPL/githubauthlib/actions/workflows/tests.yml/badge.svg)](https://github.com/fleXRPL/githubauthlib/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript Version](https://img.shields.io/badge/typescript-5.3.3-blue)](https://www.typescriptlang.org/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
@@ -11,7 +12,6 @@
 [![Dependabot Status](https://img.shields.io/badge/Dependabot-enabled-success.svg)](https://github.com/fleXRPL/githubauthlib/blob/main/.github/dependabot.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Downloads](https://pepy.tech/badge/githubauthlib)](https://pepy.tech/project/githubauthlib)
 
 A Python library for securely retrieving GitHub tokens from system keychains across different operating systems.
