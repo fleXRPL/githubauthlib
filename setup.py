@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="githubauthlib",
-    version="1.0.1",
+    version="2.0.0",
     description='A library for authenticating with GitHub across different operating systems',
     long_description=long_description,
     long_description_content_type='text/markdown',
