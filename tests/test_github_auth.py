@@ -4,9 +4,13 @@ import subprocess
 import unittest
 from unittest.mock import patch
 
-from githubauthlib import (CredentialHelperError, InvalidTokenError,
-                           PlatformNotSupportedError, TokenNotFoundError,
-                           get_github_token)
+from githubauthlib import (
+    CredentialHelperError,
+    InvalidTokenError,
+    PlatformNotSupportedError,
+    TokenNotFoundError,
+    get_github_token,
+)
 
 
 class TestGitHubAuth(unittest.TestCase):
