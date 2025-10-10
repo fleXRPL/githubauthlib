@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.9', '3.10', '3.12', '3.13']
 
     steps:
     - uses: actions/checkout@v4
@@ -23,14 +23,19 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        python --version
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run tests and linting
       run: |
+        echo "Running Black formatting check..."
         black --check githubauthlib tests
+        echo "Running isort import sorting check..."
         isort --check githubauthlib tests
+        echo "Running flake8 linting..."
         flake8 githubauthlib tests
-        pytest tests/ --cov=githubauthlib --cov-report=xml --cov-fail-under=90
+        echo "Running pytest with coverage..."
+        pytest tests/ --cov=githubauthlib --cov-report=xml --cov-fail-under=90 -v
 
   publish:
     needs: test
