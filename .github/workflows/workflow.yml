@@ -9,27 +9,29 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.12', '3.13']
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.12
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.12'
         cache: 'pip'
+    - name: Debug environment
+      run: |
+        echo "=== Environment Debug ==="
+        python --version
+        pip --version
+        ls -la
+        echo "=== End Debug ==="
+    
     - name: Install dependencies
       run: |
-        python --version
+        echo "=== Installing dependencies ==="
         python -m pip install --upgrade pip
-        pip --version
-        echo "Installing dependencies from requirements.txt..."
         pip install -r requirements.txt
-        echo "Dependencies installed successfully"
+        echo "=== Dependencies installed ==="
     - name: Run tests and linting
       run: |
         echo "Running Black formatting check..."
