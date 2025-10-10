@@ -9,39 +9,29 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.12', '3.13']
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.12
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12'
+        python-version: ${{ matrix.python-version }}
         cache: 'pip'
-    - name: Debug environment
-      run: |
-        echo "=== Environment Debug ==="
-        python --version
-        pip --version
-        ls -la
-        echo "=== End Debug ==="
-    
     - name: Install dependencies
       run: |
-        echo "=== Installing dependencies ==="
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        echo "=== Dependencies installed ==="
     - name: Run tests and linting
       run: |
-        echo "Running Black formatting check..."
         black --check githubauthlib tests
-        echo "Running isort import sorting check..."
         isort --check githubauthlib tests
-        echo "Running flake8 linting..."
         flake8 githubauthlib tests
-        echo "Running pytest with coverage..."
-        pytest tests/ --cov=githubauthlib --cov-report=xml --cov-fail-under=90 -v
+        pytest tests/ --cov=githubauthlib --cov-report=xml --cov-fail-under=90
 
   publish:
     needs: test
