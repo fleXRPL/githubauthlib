@@ -3,11 +3,13 @@
 A Python library for securely retrieving GitHub tokens from system keychains across different operating systems.
 
 #### versions
+
 [![PyPI version](https://badge.fury.io/py/githubauthlib.svg)](https://pypi.org/project/githubauthlib/)
 [![PyPI version](https://img.shields.io/pypi/v/githubauthlib.svg)](https://pypi.org/project/githubauthlib/)
 [![Python](https://img.shields.io/pypi/pyversions/githubauthlib.svg)](https://pypi.org/project/githubauthlib/)
 
 #### health
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fleXRPL_githubauthlib&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fleXRPL_githubauthlib)
@@ -21,23 +23,23 @@ A Python library for securely retrieving GitHub tokens from system keychains acr
 [![Downloads](https://pepy.tech/badge/githubauthlib)](https://pepy.tech/project/githubauthlib)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-
 ## Features
 
 - Cross-platform support:
   - macOS: Uses Keychain Access
   - Windows: Uses Credential Manager
   - Linux: Uses libsecret
-- Secure token retrieval
-- Token validation
-- Comprehensive error handling
-- Logging support
+- Secure token retrieval with validation
+- Comprehensive exception hierarchy for precise error handling
+- Structured logging support
+- Token format validation (supports both personal and fine-grained tokens)
+- Robust credential parsing and sanitization
 
 ## Prerequisites
 
 ### All Platforms
 
-- Python 3.6 or higher
+- Python 3.9 or higher
 - Git (with credentials configured)
 
 ### Linux-Specific
@@ -74,16 +76,29 @@ pip install .
 ## Usage
 
 ```python
-from githubauthlib import get_github_token, GitHubAuthError
+from githubauthlib import (
+    get_github_token,
+    GitHubAuthError,
+    TokenNotFoundError,
+    InvalidTokenError,
+    PlatformNotSupportedError,
+    CredentialHelperError
+)
 
 try:
     token = get_github_token()
-    if token:
-        print("Token retrieved successfully!")
-    else:
-        print("No token found in system keychain")
+    print("Token retrieved successfully!")
+    print(f"Token: {token[:10]}...")  # Show first 10 chars only
+except TokenNotFoundError:
+    print("No GitHub token found in system keychain")
+except InvalidTokenError:
+    print("Invalid token format detected")
+except PlatformNotSupportedError:
+    print("Current platform is not supported")
+except CredentialHelperError:
+    print("Failed to access system credential store")
 except GitHubAuthError as e:
-    print(f"Error retrieving token: {e}")
+    print(f"GitHub authentication error: {e}")
 ```
 
 ## Verifying Installation
@@ -100,19 +115,59 @@ pip show githubauthlib
 
 For development, you may want to add the package directory to your PYTHONPATH. See [AUXILIARY.md](AUXILIARY.md) for detailed instructions.
 
+## Breaking Changes in v2.0.0
+
+⚠️ **Important**: Version 2.0.0 introduces breaking changes:
+
+- `get_github_token()` now raises specific exceptions instead of returning `None`
+- All error handling now uses structured logging instead of print statements
+- Token validation is now strict and validates format
+- Python 3.6, 3.7, and 3.8 support has been removed (EOL)
+
+### Migration Guide
+
+**Before (v1.x.x):**
+
+```python
+token = get_github_token()
+if token:
+    print("Success!")
+else:
+    print("Failed!")
+```
+
+**After (v2.0.0):**
+
+```python
+try:
+    token = get_github_token()
+    print("Success!")
+except TokenNotFoundError:
+    print("No token found!")
+except GitHubAuthError as e:
+    print(f"Error: {e}")
+```
+
 ## Troubleshooting
 
 1. **Token Not Found**
    - Verify Git credentials are properly configured
    - Check system keychain for GitHub credentials
+   - Handle `TokenNotFoundError` exception
 
 2. **Permission Issues**
    - Ensure proper system keychain access
    - Verify Python has required permissions
+   - Handle `CredentialHelperError` exception
 
 3. **Linux Issues**
    - Confirm libsecret-tools is installed
    - Check D-Bus session is running
+   - Handle `PlatformNotSupportedError` exception
+
+4. **Invalid Token Format**
+   - Verify token starts with `ghp_` or `github_pat_`
+   - Handle `InvalidTokenError` exception
 
 ## Contributing
 
@@ -124,4 +179,4 @@ For development, you may want to add the package directory to your PYTHONPATH. S
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
