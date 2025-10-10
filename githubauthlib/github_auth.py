@@ -58,9 +58,12 @@ def _validate_token(token: str) -> bool:
         return False
 
     # GitHub personal access tokens start with 'ghp_' and are 40 characters long
+    # GitHub organization tokens start with 'gho_' and are 40 characters long
     # GitHub fine-grained tokens start with 'github_pat_' and are longer
     # Allow for some flexibility in token length for testing
     if token.startswith("ghp_") and len(token) >= 40:
+        return True
+    elif token.startswith("gho_") and len(token) >= 40:
         return True
     elif token.startswith("github_pat_") and len(token) > 40:
         return True
