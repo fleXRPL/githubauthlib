@@ -221,6 +221,14 @@ class TestGitHubAuth(unittest.TestCase):
         )
         self.assertTrue(_validate_token(fine_grained_token))
 
+    def test_validate_token_organization(self):
+        """Test token validation with organization token."""
+        from githubauthlib.github_auth import _validate_token
+
+        # Test organization token
+        org_token = "gho_1234567890abcdef1234567890abcdef123456"
+        self.assertTrue(_validate_token(org_token))
+
     @patch("platform.system")
     @patch("subprocess.check_output")
     def test_linux_libsecret_empty_output(self, mock_subprocess, mock_platform):

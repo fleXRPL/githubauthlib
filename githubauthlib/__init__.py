@@ -14,7 +14,7 @@ from .github_auth import (
     get_github_token,
 )
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __author__ = "garotm"
 __license__ = "MIT"
 

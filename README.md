@@ -32,7 +32,7 @@ A Python library for securely retrieving GitHub tokens from system keychains acr
 - Secure token retrieval with validation
 - Comprehensive exception hierarchy for precise error handling
 - Structured logging support
-- Token format validation (supports both personal and fine-grained tokens)
+- Token format validation (supports personal, organization, and fine-grained tokens)
 - Robust credential parsing and sanitization
 
 ## Prerequisites
@@ -166,7 +166,7 @@ except GitHubAuthError as e:
    - Handle `PlatformNotSupportedError` exception
 
 4. **Invalid Token Format**
-   - Verify token starts with `ghp_` or `github_pat_`
+   - Verify token starts with `ghp_` (personal), `gho_` (organization), or `github_pat_` (fine-grained)
    - Handle `InvalidTokenError` exception
 
 ## Contributing
